@@ -1,0 +1,12 @@
+{
+  "name": "Teleport",
+  "version": "0.1",
+  "description": "WordPress task launcher.",
+  "homepage_url": "http://github.com/beaucollisn/wp-teleport",
+  "content_scripts": [{
+    "matches": [ "http://*/wp-admin/*", "https://*/wp-admin/*"],
+    "css" : ["launcher/launcher.css"],
+    "js" : ["lib/liquid-metal.js", "lib/jquery.js", "launcher/launcher.js", "init.js", "plugins/wordpress.js"],
+    "run_at" : "document_start"
+  }]
+}

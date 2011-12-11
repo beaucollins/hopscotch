@@ -2,12 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Author</key>
+	<string>Beau Collins</string>
 	<key>Builder Version</key>
 	<string>7534.52.7</string>
 	<key>CFBundleDisplayName</key>
-	<string>wp-menu</string>
+	<string>WordPress Launcher</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.redimastudio.wpmenu</string>
+	<string>com.redimastudio.wp-launcher</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -20,21 +22,22 @@
 	<dict>
 		<key>Scripts</key>
 		<dict>
-			<key>End</key>
-			<array>
-				<string>menu.js</string>
-			</array>
 			<key>Start</key>
 			<array>
-				<string>jquery.js</string>
-				<string>liquid-metal.js</string>
+				<string>lib/liquid-metal.js</string>
+				<string>launcher/launcher.js</string>
+				<string>init.js</string>
+				<string>lib/jquery.js</string>
+				<string>plugins/wordpress.js</string>
 			</array>
 		</dict>
 		<key>Stylesheets</key>
 		<array>
-			<string>menu.css</string>
+			<string>launcher/launcher.css</string>
 		</array>
 	</dict>
+	<key>Description</key>
+	<string>A launcher for your WordPress admin.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -47,5 +50,7 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Website</key>
+	<string>http://beaucollins.github.com/wp-launcher</string>
 </dict>
 </plist>
