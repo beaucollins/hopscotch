@@ -30,6 +30,7 @@ if (launcher && launcher.constructor == Launcher) {
       { token: 'Search Posts:',       url:admin_url + 'edit.php?s=%QUERY%' },
       { token: 'Search Categories:',  url:admin_url + 'edit-tags.php?taxonomy=category&s=%QUERY%' },
       { token: 'Search Tags:',        url:admin_url + 'edit-tags.php?taxonomy=post_tag&s=%QUERY%' },
+      { token: 'Search Users:',       url:admin_url + 'users.php?s=%QUERY%' },
       { token: 'Search Media:',       url:admin_url + 'upload.php?s=%QUERY%' },
       { token: 'Search Pages:',       url:admin_url + 'edit.php?s=%QUERY%&post_type=page' },
       { token: 'Search Comments:',    url:admin_url + 'edit-comments.php?s=%QUERY%' }
