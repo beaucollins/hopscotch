@@ -7,7 +7,11 @@
   "content_scripts": [{
     "matches": [ "http://*/wp-admin/*", "https://*/wp-admin/*"],
     "css" : ["launcher/launcher.css"],
-    "js" : ["lib/liquid-metal.js", "lib/jquery.js", "launcher/launcher.js", "init.js", "plugins/wordpress.js"],
+    "js" : ["lib/liquid-metal.js",
+            "lib/jquery.js",
+            "launcher/launcher.js",
+            "init.js",
+            "plugins/wordpress.js"],
     "run_at" : "document_start"
   }]
 }
