@@ -7,9 +7,9 @@
 	<key>Builder Version</key>
 	<string>7534.52.7</string>
 	<key>CFBundleDisplayName</key>
-	<string>WordPress Launcher</string>
+	<string>WP Teleport</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.redimastudio.wp-launcher</string>
+	<string>com.beaucollins.safari.wp-teleport</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -50,7 +50,9 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>http://beaucollins.github.com/wp-teleport/updates.plist</string>
 	<key>Website</key>
-	<string>http://beaucollins.github.com/wp-launcher</string>
+	<string>http://beaucollins.github.com/wp-teleport</string>
 </dict>
 </plist>

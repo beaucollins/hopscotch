@@ -1,8 +1,9 @@
 {
-  "name": "Teleport",
-  "version": "0.1",
+  "name": "WP Teleport",
+  "version": "1.0",
   "description": "WordPress task launcher.",
-  "homepage_url": "http://github.com/beaucollisn/wp-teleport",
+  "homepage_url": "http://beaucollins.github.com/wp-teleport/",
+  "update_url": "http://beaucollins.github.com/wp-teleport/updates.xml",
   "content_scripts": [{
     "matches": [ "http://*/wp-admin/*", "https://*/wp-admin/*"],
     "css" : ["launcher/launcher.css"],
