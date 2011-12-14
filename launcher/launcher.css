@@ -49,6 +49,8 @@ wplauncher-result-list {
 
 wplauncher-action {
     display:block;
+    white-space:nowrap;
+    text-overflow:ellipsis;
     counter-increment: item 1;
     font-size: 18px;
     line-height: 28px;

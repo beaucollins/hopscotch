@@ -17,7 +17,6 @@ Launcher.prototype.initialize = function(parentNode){
       result_list = this.result_list = document.createElement('wplauncher-result-list');
   
   input.setAttribute('type', 'text');
-  input.setAttribute('placeholder', "Type…");
   
   taskbar.style.display = 'none';
   
@@ -30,9 +29,11 @@ Launcher.prototype.initialize = function(parentNode){
     if (launcher.state == 'closing' || launcher.state == 'launching') {
       launcher.state = 'closed';
       launcher.taskbar.style.display = 'none';
+      launcher.taskbar.style.webkitTransform = null;
       launcher.reset();
     } else if (launcher.state == 'opening') {
       launcher.state = 'open';
+      launcher.input.focus();
     }
   });
   
@@ -42,6 +43,7 @@ Launcher.prototype.initialize = function(parentNode){
       e.preventDefault();
       input.value = "";
       input.blur();
+      launcher.displayActions([]);
       if (launcher.state != 'closed' ) {
         launcher.close();        
       };
@@ -62,18 +64,17 @@ Launcher.prototype.initialize = function(parentNode){
       e.preventDefault();
       launcher.autocompleteAction();
       return;
-    } else if(e.ctrlKey && 48 <= e.which && 57 >= e.which){
+    } else if(e.ctrlKey && 48 <= e.which && 57 >= e.which){ // 0-9 with .ctrlKey
       e.preventDefault();
       var index = e.which == 48 ? 9 : e.which - 49;
       launcher.highlightAction(index);
       launcher.performHighlightedAction();
       return;
     }
-  });
+  }, true);
   
   var last_query = "";
-  
-  // perform the filtering based on the input value
+    
   input.addEventListener('keyup', function(e){
     if (input.value == "") {
       last_query = input.value;
@@ -88,8 +89,8 @@ Launcher.prototype.initialize = function(parentNode){
       launcher.displayActions(filtered_actions);
     };
     
-  });
-  
+  }, true)
+    
   result_list.addEventListener('click', function(e){
     var action_node = e.target;
     do {
@@ -175,13 +176,12 @@ Launcher.prototype.popScope = function(){
 Launcher.prototype.open = function(){
   this.state = 'opening';
   var launcher = this;
-  this.taskbar.style.webkitTransform = "scale3d(1,0,1)";
+  this.taskbar.style.webkitTransform = "scale(1,0)";
   this.taskbar.style.webkitTransitionDuration = '200ms';
   this.taskbar.style.display = "block";
   this.taskbar.style.opacity = "0.95";
   setTimeout(function(){
-    launcher.input.focus();
-    launcher.taskbar.style.webkitTransform = "scale3d(1,1,1)";
+    launcher.taskbar.style.webkitTransform = null;
   })
   
 }
@@ -192,7 +192,7 @@ Launcher.prototype.open = function(){
 Launcher.prototype.close = function(){
   this.state = 'closing';
   this.taskbar.style.webkitTransitionDuration = '175ms';
-  this.taskbar.style.webkitTransform = "scale3d(1,0,1)";
+  this.taskbar.style.webkitTransform = "scale(1,0)";
   this.taskbar.style.opacity = "0";
 }
 
