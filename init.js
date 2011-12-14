@@ -5,19 +5,19 @@ if (window.top === window) {
   
   document.addEventListener('DOMContentLoaded', function(){
     
-    // if theres a toolbar, then we know we're in the admin or logged in on the front end
-
-    if(document.location.toString().match(/\/wp-admin\//)){
-      
+    
       launcher.initialize();
-      
+    
+      // if we don't have any actions, theres nothing for us to do
+      if (launcher.root.actions == 0) return;
+    
       // For repositioning the interface when browser changes
       var resize_timer;
       var resize = function(){
-        clearTimeout(resize_timer)
+        clearTimeout(resize_timer);
         resize_timer = setTimeout(function(){
-          launcher.taskbar.style.left = Math.max(window.innerWidth/2 -250, 0) + 'px';
-          launcher.taskbar.style.top = Math.max(window.innerHeight/8, 0) + 'px';
+          launcher.taskbar.style.left = Math.max(Math.round(window.innerWidth/2) -250, 0) + 'px';
+          launcher.taskbar.style.top = Math.max(Math.round(window.innerHeight/8), 0) + 'px';
         }, 200);
       }
       // resize once on page load
@@ -59,6 +59,5 @@ if (window.top === window) {
         };
       })
       
-    }
   });  
 };
