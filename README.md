@@ -6,11 +6,11 @@ A task launcher for WordPress.
 
 Download and install the extension for your browser:
 
-- [Safari][]
-- [Chrome][]
+- [Safari v1.0][safari]
+- [Chrome v1.0][chrome]
 
-[Safari]: #safari-download
-[Chrome]: #chrome-download
+[Safari]: https://github.com/downloads/beaucollins/wp-teleport/wp-teleport_v1.0.safariextz
+[Chrome]: https://github.com/downloads/beaucollins/wp-teleport/wp-teleport_v1.0.crx
 
 ## Usage
 
