@@ -259,18 +259,19 @@ Launcher.prototype.performAction = function(action){
   var actionEvent = {
     query: this.input.value,
     preventLaunch: false,
-    launcher: this
-  }
-  var callback = action.perform(actionEvent);
-  if (actionEvent.preventLaunch !== true) {
+    launcher: this,
+    scope: this.currentScope()
+  };
+  var response = action.perform(actionEvent);
+  if (response.preventLaunch !== true) {
     this.state = 'launching';
-    this.taskbar.style.webkitTransform = 'scale3d(2,2,1)';
+    this.taskbar.style.webkitTransform = 'scale(2,2)';
     this.taskbar.style.opacity = '0';
     setTimeout(function(){
-      callback.apply(action, [actionEvent.query, actionEvent.launcher]);
+      response.callback.apply(action, [actionEvent.query, actionEvent.launcher]);
     })
   } else {
-    callback.apply(action, [actionEvent.query, actionEvent.launcher]);
+    response.callback.apply(action, [actionEvent.query, actionEvent.launcher]);
   }
 }
 /*
@@ -328,9 +329,13 @@ var Action = function(token, options){
   this.options = {
     onScore: options.onScore || function(query){ return Action.score(this.token, query) },
     onAutocomplete : options.onAutocomplete || function(query){ return this.token; },
-    onPerform : options.onPerform || function(){ throw("No Action defined for: " + this.token) },
-    onHTML: options.onHTML || function(){ return "<strong>" + token + "</strong>" },
-    preventLaunch: options.preventLaunch === true ? true : false
+    onPerform : options.onPerform || function(actionEvent){
+      return {
+        preventLaunch: false,
+        callback: function(){throw("No Action defined for: " + this.token)}
+      }
+    },
+    onHTML: options.onHTML || function(){ return "<strong>" + token + "</strong>" }
   }
   
 }
@@ -348,8 +353,7 @@ Action.prototype.autocomplete = function(query){
 }
 
 Action.prototype.perform = function(actionEvent){
-  actionEvent.preventLaunch = this.options.preventLaunch;
-  return this.options.onPerform;
+  return this.options.onPerform.call(this, actionEvent);
 }
 
 Action.prototype.getHtml = function(query){
