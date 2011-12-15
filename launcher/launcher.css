@@ -36,10 +36,10 @@ wplauncher-results {
     display:block;
     background: hsl(0,0%,95%);
     height:0;
-    min-height:10px;
     overflow:hidden;
     -webkit-transition: height 200ms;
     box-shadow: 0 2px 2px #000;
+    min-height:10px;
 }
 
 wplauncher-result-list {
@@ -82,8 +82,22 @@ wplauncher-action strong {
     width: 60%;
 }
 
+wplauncher-action.disclosure::before {
+    font-family: "monaco", monospace;
+    font-weight: bold;
+    content: "▸";
+    line-height:24px;
+    position: absolute;
+    right: 44px;
+    top: 3px;
+    font-size: 24px;
+    font-weight:normal;
+    color:#333;
+    text-shadow: 0 1px 0 hsl(0,0%,100%);
+    opacity: 0.8;
+}
 
-wplauncher-action:after {
+wplauncher-action::after {
     font: 18px "Helvetica Neue";
     color: rgb(33,117,155);
     text-shadow: 0 1px 0 hsla(0,0%,100%,1.0);
@@ -95,7 +109,7 @@ wplauncher-action:after {
     -webkit-transform:translate(0, -9px);
 }
 
-wplauncher-action:nth-child(10):after   { counter-reset:item }
+wplauncher-action::nth-child(10):after   { counter-reset:item }
 
 wplauncher-action:hover {
     cursor:pointer;
@@ -108,7 +122,7 @@ wplauncher-action[highlighted] {
     border-top-color: hsla(0,0%,0%,0.05) !important;
 }
 
-wplauncher-action[highlighted]:after {
+wplauncher-action[highlighted]::after {
     opacity:0.5;
     color:#000;
     text-shadow: 0 1px 0 hsla(0,0%,100%,1.0);
@@ -117,3 +131,40 @@ wplauncher-action[highlighted]:after {
     font-size: 18px;
 }
 
+wplauncher-scope {
+    display:block;
+    background:#FFF -webkit-linear-gradient(hsl(0,0%,100%),hsl(0,0%,90%));
+    padding: 0 5px;
+    text-align:left;
+    font-size: 14px;
+    line-height: 28px;
+    border-bottom: 1px solid hsl(0,0%,85%);
+    font-weight:normal;
+    color:#666;
+    text-shadow: 0 1px 0 hsl(0,0%,100%);
+    text-align:center;
+    position: relative;
+    cursor:pointer;
+}
+
+wplauncher-scope::before {
+    font: 12px "Helvetica Neue";
+    content: '⌘↑';
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    padding: 2px 2px 1px;
+    -webkit-box-model: boder-box;
+    font-weight:normal;
+    color: rgb(33,117,155);
+    border-width: 3px 3px 3px 12px;
+    -webkit-border-image: url(./images/back_static.png) 3 3 3 12;
+}
+
+wplauncher-scope:hover::before {
+    -webkit-border-image: url(./images/back_hover.png) 3 3 3 12;
+}
+
+wplauncher-scope:active::before {
+    -webkit-border-image: url(./images/back_active.png) 3 3 3 12;
+}

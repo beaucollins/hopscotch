@@ -14,13 +14,16 @@ Launcher.prototype.initialize = function(parentNode){
       root = this.root = new Scope(),
       scope = this.scope = [root],
       results = this.results = document.createElement('wplauncher-results'),
-      result_list = this.result_list = document.createElement('wplauncher-result-list');
+      result_list = this.result_list = document.createElement('wplauncher-result-list'),
+      scope_bar = this.scope_bar = document.createElement('wplauncher-scope');
   
   input.setAttribute('type', 'text');
   
   taskbar.style.display = 'none';
+  scope_bar.style.display = 'none';
   
   taskbar.appendChild(input);
+  taskbar.appendChild(scope_bar);
   taskbar.appendChild(results);
   results.appendChild(result_list);
   
@@ -50,11 +53,19 @@ Launcher.prototype.initialize = function(parentNode){
       return
     } else if (e.which == 40){ //DOWN
       e.preventDefault();
-      launcher.highlightNextAction();
+      if (e.metaKey) {
+        launcher.performHighlightedAction();
+      } else {
+        launcher.highlightNextAction();        
+      }
       return;
     } else if(e.which == 38){ //UP
       e.preventDefault();
-      launcher.highlightPreviousAction();
+      if (e.metaKey) {
+        launcher.popScope();
+      } else {
+        launcher.highlightPreviousAction();
+      }
       return;
     } else if (e.which == 13){ // RETURN
       e.preventDefault();
@@ -73,21 +84,14 @@ Launcher.prototype.initialize = function(parentNode){
     }
   }, true);
   
-  var last_query = "";
+  var last_query = null;
     
   input.addEventListener('keyup', function(e){
-    if (input.value == "") {
-      last_query = input.value;
-      launcher.displayActions([]);
-      return;
-    };
     if (last_query != input.value) {
-      last_query = input.value;
-      var filtered_actions = launcher.filter();
-
       // display the actions
-      launcher.displayActions(filtered_actions);
+      launcher.displayActions(launcher.filter());
     };
+    last_query = input.value;
     
   }, true)
     
@@ -120,6 +124,7 @@ Launcher.prototype.displayActions = function(actions){
     var node = document.createElement('wplauncher-action');
     node.action = action;
     node.innerHTML = action.getHtml(this.input.value);
+    node.className = action.options.className;
     this.result_list.appendChild(node);
     if (scope.highlightedAction == action) {
       node.setAttribute('highlighted', 'yes');
@@ -143,6 +148,7 @@ Launcher.prototype.reset = function(){
   this.clearResults();
   this.input.value = "";
   this.scope = [this.root];
+  this.updateScopeBar();
 }
 
 Launcher.prototype.clearResults = function(){
@@ -151,8 +157,8 @@ Launcher.prototype.clearResults = function(){
 
 Launcher.prototype.filter = function(){
   var scope = this.currentScope();
-  var query = this.input.value;
-  // var actions = scope.actions.slice(0);
+  var query = scope.query = this.input.value;
+  console.log("Query", query);
   return scope.filterActions(query);
 
 }
@@ -163,11 +169,38 @@ Launcher.prototype.currentScope = function(){
 
 Launcher.prototype.pushScope = function(scope){
   this.scope.push(scope);
+  this.updateScopeBar();
+  this.input.value = "";
+  this.displayActions(scope.filterActions(""));
   return this;
 }
 
 Launcher.prototype.popScope = function(){
-  return this.scope.pop();
+  if (this.scope.length == 1) return;
+  var scope = this.scope.pop();
+  var current = this.currentScope();
+  scope.query = "";
+  this.input.value = current.query;
+  this.updateScopeBar();
+  this.displayActions(current.filterActions(current.query));
+  return scope;
+}
+
+Launcher.prototype.addAction = function(){
+  this.root.addAction.apply(this.root, arguments);
+}
+
+Launcher.prototype.updateScopeBar = function(){
+  if (this.scope.length > 1) {
+    // grab the last item
+    var scope = this.currentScope();
+    // add a back button and the current scope name?
+    this.scope_bar.innerHTML = "<span>" + scope.title + "</span>";
+    this.scope_bar.style.display = 'block';
+  } else {
+    this.scope_bar.innerHTML = "";
+    this.scope_bar.style.display = 'none';
+  }
 }
 
 /*
@@ -285,12 +318,21 @@ Launcher.prototype.autocompleteAction = function(){
 }
 
 /* A scope provides the context that the current search is being performed on */
-var Scope = function(){
-  var actions = this.actions = [];
+var Scope = function(title){
+  this.title = title || "Untitled";
+  this.actions = [];
 }
 
 Scope.prototype.addAction = function(action_or_token, options){
-  var action = action_or_token.constructor == Action ? action_or_token : new Action(action_or_token, options)
+  var action;
+  if (action_or_token.constructor == Action) {
+    action = action_or_token;
+  } else {
+    if (typeof(options) == 'function') {
+      options = {onPerform:options};
+    };
+    action = new Action(action_or_token, options);
+  }
   this.actions.push(action);
   return this;
 }
@@ -327,6 +369,8 @@ var Action = function(token, options){
   if(!options) options = {};
   this.token = token;
   this.options = {
+    className: '' || options.className,
+    showWhenBlank: (options.showWhenBlank === true),
     onScore: options.onScore || function(query){ return Action.score(this.token, query) },
     onAutocomplete : options.onAutocomplete || function(query){ return this.token; },
     onPerform : options.onPerform || function(actionEvent){
@@ -344,6 +388,9 @@ var Action = function(token, options){
 Default scoring is the LiquidMetal score based on the Action's token
 */
 Action.prototype.score = function(query){
+  if (query.trim() == "") {
+    return this.options.showWhenBlank ? 1 : 0;
+  }
   return this.options.onScore.call(this, query);
 }
 
@@ -368,13 +415,25 @@ var EventEmitter = function(){
   
   var listeners = {}
   
-  this.addEventListener = function(eventName, callback){
+  this.addEventListener = function(eventName, listener){
     if(!listeners[eventName]) listeners[eventName] = [];
-    listeners[eventName].push(callback);
+    listeners[eventName].push(listener);
+  }
+  
+  this.removeEventListener = function(eventName, listener){
+    var eventListeners = listeners[eventName];
+    if (eventListeners) {
+      var filtered = [];
+      eventListeners.forEach(function(existing){
+        if(existing != listener) filtered.push(existing);
+      })
+      listeners[eventName] = filtered;
+    };
   }
   
   this.triggerEvent = function(eventName){
     var eventListeners = listeners[eventName];
+    if (!eventListeners) return;
     for (var i=0; i < eventListeners.length; i++) {
       eventListeners[i].apply(null, [{
         name: eventName,
