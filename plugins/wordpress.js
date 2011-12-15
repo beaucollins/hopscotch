@@ -35,6 +35,25 @@ if (launcher && launcher.constructor == Launcher) {
       
     })
     
+    if (!in_admin) {
+      // index wp
+      $('#wp-admin-bar-blog-default a:not([aria-haspopup]), #wp-admin-bar-stats a').each(function(){
+        var link = $(this), parent = link.parents('#wp-admin-bar-new-content');
+        var label = link.text().trim() == '' ? link.find('img').attr('alt') : link.text();
+        if (parent.length > 0) {
+          label = parent.children('a').text() + " " + label;
+        };
+        console.log(label);
+        launcher.addAction(label, function(){
+          return {
+            callback: function(){
+              window.location = link.attr('href');
+            }
+          }
+        });
+      })
+    };
+    
     
     var searches = []
     // only present in the admin
@@ -100,27 +119,68 @@ if (launcher && launcher.constructor == Launcher) {
       });
     });
     
-    launcher.root.addAction('Spin Me', {
-      onHTML: function(){
-        return "<strong>I dare you!</strong> <span style=\"-webkit-transform:rotateZ(180deg)\">You win!</span>";
-      },
-      onPerform: function(actionEvent){
-        return {
-          preventLaunch: true,
-          callback:function(){
-            if (!this.rotate) {
-              this.rotate = 180;
-            } else {
-              this.rotate += 180;
+    // #wpadminbar-mysites
+    var sites = $('#wp-admin-bar-my-sites > li');
+    sites.each(function(){
+      var menu = $(this);
+      var site_name = menu.children('a').text();
+      var blavatar = menu.children('a').children().attr('src');
+      var scope = new Scope(site_name);
+      var domain = menu.children('a').attr('href').match(/\/\/([^\/]+)/)[1];
+      console.log(site_name + ' ' + domain);
+      launcher.addAction(site_name + ' ' + domain, {
+        className: 'disclosure',
+        onHTML: function(){
+          return "<strong><img src=\"" + blavatar + "\"> " + site_name + "</strong>";
+        },
+        onPerform: function(actionEvent){
+          return {
+            preventLaunch:true,
+            callback:function(query, launcher){
+              launcher.pushScope(scope);
             }
-            launcher.taskbar.style.webkitTransform = 'rotateZ(' + this.rotate + 'deg)';
           }
-        };
-      },
-      onScore: function(query){
-        return query.toUpperCase() == this.token.toUpperCase() ? 1 : 0;
-      }
-    });
+        }
+      });
+      
+      menu.find('li a').each(function(){
+        var link = $(this);
+        scope.addAction(link.text(), {
+          showWhenBlank:true,
+          onPerform:function(){
+            return {
+              callback:function(){
+                window.location = link.attr('href');
+              }
+            };
+          }
+        })
+      })
+    })
+    
+    if (launcher.root.actions.length > 0) {
+      launcher.addAction('Spin Me', {
+        onHTML: function(){
+          return "<strong>I dare you!</strong> <span style=\"-webkit-transform:rotateZ(180deg)\">You win!</span>";
+        },
+        onPerform: function(actionEvent){
+          return {
+            preventLaunch: true,
+            callback:function(){
+              if (!this.rotate) {
+                this.rotate = 180;
+              } else {
+                this.rotate += 180;
+              }
+              launcher.taskbar.style.webkitTransform = 'rotateZ(' + this.rotate + 'deg)';
+            }
+          };
+        },
+        onScore: function(query){
+          return query.toUpperCase() == this.token.toUpperCase() ? 1 : 0;
+        }
+      });
+    };
     
     
   });
