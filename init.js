@@ -7,9 +7,10 @@ if (window.top === window) {
     
     
       launcher.initialize();
-    
+      
       // if we don't have any actions, theres nothing for us to do
       if (launcher.root.actions == 0) return;
+      console.log("Launcher intitialized with: ", launcher.root.actions.length, 'actions');
     
       // For repositioning the interface when browser changes
       var resize_timer;
