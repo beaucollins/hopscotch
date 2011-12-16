@@ -158,7 +158,6 @@ Launcher.prototype.clearResults = function(){
 Launcher.prototype.filter = function(){
   var scope = this.currentScope();
   var query = scope.query = this.input.value;
-  console.log("Query", query);
   return scope.filterActions(query);
 
 }

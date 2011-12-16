@@ -43,7 +43,6 @@ if (launcher && launcher.constructor == Launcher) {
         if (parent.length > 0) {
           label = parent.children('a').text() + " " + label;
         };
-        console.log(label);
         launcher.addAction(label, function(){
           return {
             callback: function(){
@@ -127,7 +126,6 @@ if (launcher && launcher.constructor == Launcher) {
       var blavatar = menu.children('a').children().attr('src');
       var scope = new Scope(site_name);
       var domain = menu.children('a').attr('href').match(/\/\/([^\/]+)/)[1];
-      console.log(site_name + ' ' + domain);
       launcher.addAction(site_name + ' ' + domain, {
         className: 'disclosure',
         onHTML: function(){
