@@ -34,7 +34,7 @@ if (window.top === window) {
       document.addEventListener('keydown', function(e){
         if (e.keyCode != 91) return;
         var thisTap = e.timeStamp;
-        if (thisTap - lastTap <= 200) {
+        if (thisTap - lastTap <= 500) {
           lastTap = 0;
           launcher.toggle();
         } else {
