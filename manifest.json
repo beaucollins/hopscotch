@@ -5,7 +5,7 @@
   "homepage_url": "http://beaucollins.github.com/hopscotch/",
   "update_url": "http://beaucollins.github.com/hopscotch/updates.xml",
   "content_scripts": [{
-    "matches": [ "http://*/wp-admin/*", "https://*/wp-admin/*"],
+    "matches": [ "http://*/*", "https://*/*"],
     "css" : ["launcher/launcher.css"],
     "js" : ["lib/liquid-metal.js",
             "lib/jquery.js",
