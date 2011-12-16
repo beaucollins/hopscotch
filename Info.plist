@@ -51,8 +51,8 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://beaucollins.github.com/wp-teleport/updates.plist</string>
+	<string>http://beaucollins.github.com/hopscotch/updates.plist</string>
 	<key>Website</key>
-	<string>http://beaucollins.github.com/wp-teleport</string>
+	<string>http://beaucollins.github.com/hopscotch</string>
 </dict>
 </plist>

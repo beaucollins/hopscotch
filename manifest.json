@@ -2,8 +2,8 @@
   "name": "Hopscotch",
   "version": "1.0.0.1",
   "description": "WordPress task launcher.",
-  "homepage_url": "http://beaucollins.github.com/wp-teleport/",
-  "update_url": "http://beaucollins.github.com/wp-teleport/updates.xml",
+  "homepage_url": "http://beaucollins.github.com/hopscotch/",
+  "update_url": "http://beaucollins.github.com/hopscotch/updates.xml",
   "content_scripts": [{
     "matches": [ "http://*/wp-admin/*", "https://*/wp-admin/*"],
     "css" : ["launcher/launcher.css"],
