@@ -82,7 +82,7 @@ Launcher.prototype.initialize = function(parentNode){
       launcher.performHighlightedAction();
       return;
     }
-  }, true);
+  });
   
   var last_query = null;
     
@@ -93,7 +93,7 @@ Launcher.prototype.initialize = function(parentNode){
     };
     last_query = input.value;
     
-  }, true)
+  });
     
   result_list.addEventListener('click', function(e){
     var action_node = e.target;
