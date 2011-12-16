@@ -99,10 +99,19 @@ Launcher.prototype.initialize = function(parentNode){
     var action_node = e.target;
     do {
       if (action_node.nodeName == 'WPLAUNCHER-ACTION') {
+        e.preventDefault();
+        e.stopPropagation();
         launcher.performAction(action_node.action);
         break;
       };
     } while(action_node = action_node.parentNode);
+  });
+  
+  scope_bar.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    launcher.popScope();
+    input.focus();
   });
   
   
