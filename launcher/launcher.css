@@ -89,8 +89,8 @@ wplauncher-action.disclosure::before {
     content: "▸";
     line-height:24px;
     position: absolute;
-    right: 44px;
-    top: 3px;
+    right: 40px;
+    top: 1px;
     font-size: 24px;
     font-weight:normal;
     color:#333;
