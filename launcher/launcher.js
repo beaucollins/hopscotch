@@ -188,7 +188,7 @@ Launcher.prototype.popScope = function(){
   var scope = this.scope.pop();
   var current = this.currentScope();
   scope.query = "";
-  this.input.value = current.query;
+  this.input.value = current.query || "";
   this.updateScopeBar();
   this.displayActions(current.filterActions(current.query));
   return scope;
@@ -396,7 +396,7 @@ var Action = function(token, options){
 Default scoring is the LiquidMetal score based on the Action's token
 */
 Action.prototype.score = function(query){
-  if (query.trim() == "") {
+  if (!query || query.trim() == "") {
     return this.options.showWhenBlank ? 1 : 0;
   }
   return this.options.onScore.call(this, query);
