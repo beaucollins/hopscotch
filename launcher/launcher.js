@@ -203,7 +203,7 @@ Launcher.prototype.updateScopeBar = function(){
     // grab the last item
     var scope = this.currentScope();
     // add a back button and the current scope name?
-    this.scope_bar.innerHTML = "<span>" + scope.title + "</span>";
+    this.scope_bar.innerHTML = scope.title;
     this.scope_bar.style.display = 'block';
   } else {
     this.scope_bar.innerHTML = "";
