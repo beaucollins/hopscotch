@@ -31,12 +31,14 @@ if (window.top === window) {
       // For activating the search bar
       // double-tap CMD
       var lastTap = 0;
-	  var activationKey = window.navigator.platform == 'Win32' ? 19 : 91;
+	    var activationKey = window.navigator.platform == 'Win32' ? 19 : 91;
+      console.log(activationKey);
       document.addEventListener('keydown', function(e){
+          console.log(e.keyCode, activationKey, e.keyCode == activationKey);
         if (e.keyCode != activationKey){
-			lastTap = 0;
-			return;
-		};
+	        lastTap = 0;
+	        return;
+	      };
         var thisTap = e.timeStamp;
         if (thisTap - lastTap <= 500) {
           lastTap = 0;
