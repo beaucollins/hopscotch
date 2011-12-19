@@ -31,8 +31,9 @@ if (window.top === window) {
       // For activating the search bar
       // double-tap CMD
       var lastTap = 0;
+	  var activationKey = window.navigator.platform == 'Win32' ? 19 : 91;
       document.addEventListener('keydown', function(e){
-        if (e.keyCode != 91){
+        if (e.keyCode != activationKey){
 			lastTap = 0;
 			return;
 		};
