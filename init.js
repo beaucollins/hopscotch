@@ -32,7 +32,10 @@ if (window.top === window) {
       // double-tap CMD
       var lastTap = 0;
       document.addEventListener('keydown', function(e){
-        if (e.keyCode != 91) return;
+        if (e.keyCode != 91){
+			lastTap = 0;
+			return;
+		};
         var thisTap = e.timeStamp;
         if (thisTap - lastTap <= 500) {
           lastTap = 0;
