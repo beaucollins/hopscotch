@@ -18,15 +18,15 @@ wplauncher {
 }
 
 wplauncher input[type="text"] {
-    font-size:32px !important;
-    font-family: Helvetica, Arial !important;
+	font: 32px "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+	font-weight: light !important;
+	line-height: 1 !important;
     width:100% !important;
     padding: 10px !important;
     margin:0 !important;
     border: none !important;
     box-shadow: 0 -2px 2px #000, 1px 0 hsla(0,0%,100%,1.0) !important;
     background: -webkit-linear-gradient(hsla(0,0%,85%,1.0), hsla(0,0%,95%,0.9) 10%, hsla(0,0%,95%, 0.9) 90%, hsl(0,0%,75%)) !important;
-    border-radius: 0 !important;
     -webkit-box-sizing: border-box !important;
     border-top: 1px solid hsla(0,0%,100%,0.9) !important;
     border-bottom: 1px solid hsla(0,0%,0%,0.2) !important;
