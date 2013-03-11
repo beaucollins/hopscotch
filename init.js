@@ -1,7 +1,7 @@
 // only do this on top level windows, no iframes or frames
 if (window.top === window) {
   
-  var launcher = new Launcher();
+  var launcher = Hopscotch.ui;
   
   document.addEventListener('DOMContentLoaded', function(){
     
@@ -9,8 +9,8 @@ if (window.top === window) {
       launcher.initialize();
       
       // if we don't have any actions, theres nothing for us to do
-      if (launcher.root.actions == 0) return;
-      console.log("Hopscotch intitialized with: ", launcher.root.actions.length, 'actions');
+      if (!launcher.hasActions()) return;
+      console.log("Hopscotch intitialized with: ", launcher.getActionCount(), 'actions');
     
       // For repositioning the interface when browser changes
       var resize_timer;

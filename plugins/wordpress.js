@@ -1,5 +1,31 @@
-if (launcher && launcher.constructor == Launcher) {
-  launcher.addEventListener('setup', function(event){
+if (Hopscotch && Hopscotch.ui) {
+  Hopscotch.ui.addEventListener('setup', function(event){
+    
+    if (!launcher.hasActions()) {
+      launcher.addAction('Spin Me', {
+        onHTML: function(){
+          return "<strong>I dare you!</strong> <span style=\"-webkit-transform:rotateZ(180deg)\">You win!</span>";
+        },
+        onPerform: function(actionEvent){
+          return function(){
+            if (!this.rotate) {
+              this.rotate = 180;
+            } else {
+              this.rotate += 180;
+            }
+            launcher.taskbar.style.webkitTransform = 'rotateZ(' + this.rotate + 'deg)';
+          };
+        },
+        onScore: function(query){
+          return query.toUpperCase() == this.token.toUpperCase() ? 100 : 0;
+        }
+      });
+      launcher.addAction('Hello World', function(){ console.log("Hola mundo")});
+      var depth = 1, inception = new Hopscotch.Scope('Inception');
+      inception.addAction(inception);
+      launcher.addAction(inception);
+      
+    };
     
     var in_admin = window.location.toString().match(/\/wp-admin\//);
     
@@ -16,13 +42,9 @@ if (launcher && launcher.constructor == Launcher) {
       }
       
       if (label.trim() != "") {
-        launcher.root.addAction( (label + " " + section).trim(), {
+        launcher.addAction( (label + " " + section).trim(), {
           onPerform: function(actionEvent){
-            return {
-              callback:function(){
-                window.location = $this.attr('href');
-              }
-            }
+            window.location = $this.attr('href');
           },
           onAutocomplete: function(){
             return label;
@@ -36,6 +58,7 @@ if (launcher && launcher.constructor == Launcher) {
     })
     
     if (!in_admin) {
+      console.log("Not in admin");
       // index wp
       $('#wp-admin-bar-blog-default a:not([aria-haspopup]), #wp-admin-bar-stats a').each(function(){
         var link = $(this), parent = link.parents('#wp-admin-bar-new-content');
@@ -44,11 +67,7 @@ if (launcher && launcher.constructor == Launcher) {
           label = parent.children('a').text() + " " + label;
         };
         launcher.addAction(label, function(){
-          return {
-            callback: function(){
-              window.location = link.attr('href');
-            }
-          }
+          window.location = link.attr('href');
         });
       })
     };
@@ -76,7 +95,7 @@ if (launcher && launcher.constructor == Launcher) {
     };
     
     searches.forEach(function(search){
-      launcher.root.addAction(search.token, {
+      launcher.addAction(search.token, {
         onHTML: function(query){
           var s = "";
           if (query.indexOf(":") > -1) {
@@ -86,9 +105,9 @@ if (launcher && launcher.constructor == Launcher) {
         },
         onScore: function(query){
           if (query.indexOf(":") > -1) {
-            return Action.score(search.token, query.match(/^[^:]{0,}/)[0])
+            return Hopscotch.Action.score(search.token, query.match(/^[^:]{0,}/)[0])
           } else {
-            return Action.score(search.token, query);
+            return Hopscotch.Action.score(search.token, query);
           }
         },
         onAutocomplete:function(query){
@@ -98,20 +117,14 @@ if (launcher && launcher.constructor == Launcher) {
           var query;
           if (query = actionEvent.query.match(/^[^:]{0,}:(.*)/)){
             s = query[1].trim();
-            return {
-              preventLaunch: s == "",
-              callback:function(query){
-                if (s != "") {
-                  window.location = search.url.replace('%QUERY%', s);                  
-                };
-              }
+            return function(query){
+              if (s != "") {
+                window.location = search.url.replace('%QUERY%', s);                  
+              };
             };
           } else {
-            return {
-              preventLaunch: true,
-              callback:function(){
-                actionEvent.launcher.autocompleteAction();
-              }
+            return function(){
+              actionEvent.launcher.autocompleteAction();
             }
           }
         }
@@ -132,11 +145,8 @@ if (launcher && launcher.constructor == Launcher) {
           return "<strong><img src=\"" + blavatar + "\"> " + site_name + "</strong>";
         },
         onPerform: function(actionEvent){
-          return {
-            preventLaunch:true,
-            callback:function(query, launcher){
-              launcher.pushScope(scope);
-            }
+          return function(query, launcher){
+            launcher.pushScope(scope);
           }
         }
       });
@@ -146,39 +156,12 @@ if (launcher && launcher.constructor == Launcher) {
         scope.addAction(link.text(), {
           showWhenBlank:true,
           onPerform:function(){
-            return {
-              callback:function(){
-                window.location = link.attr('href');
-              }
-            };
+            window.location = link.attr('href');
           }
-        })
-      })
-    })
-    
-    if (launcher.root.actions.length > 0) {
-      launcher.addAction('Spin Me', {
-        onHTML: function(){
-          return "<strong>I dare you!</strong> <span style=\"-webkit-transform:rotateZ(180deg)\">You win!</span>";
-        },
-        onPerform: function(actionEvent){
-          return {
-            preventLaunch: true,
-            callback:function(){
-              if (!this.rotate) {
-                this.rotate = 180;
-              } else {
-                this.rotate += 180;
-              }
-              launcher.taskbar.style.webkitTransform = 'rotateZ(' + this.rotate + 'deg)';
-            }
-          };
-        },
-        onScore: function(query){
-          return query.toUpperCase() == this.token.toUpperCase() ? 1 : 0;
-        }
+        });
       });
-    };
+    });
+    
     
     
   });

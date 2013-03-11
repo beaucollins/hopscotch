@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Beau Collins</string>
 	<key>Builder Version</key>
-	<string>7534.52.7</string>
+	<string>8536.26.17</string>
 	<key>CFBundleDisplayName</key>
 	<string>Hopscotch</string>
 	<key>CFBundleIdentifier</key>
@@ -25,9 +25,10 @@
 			<key>Start</key>
 			<array>
 				<string>lib/liquid-metal.js</string>
-				<string>launcher/launcher.js</string>
-				<string>init.js</string>
 				<string>lib/jquery.js</string>
+				<string>launcher/launcher.js</string>
+				<string>launcher/ui.js</string>
+				<string>init.js</string>
 				<string>plugins/wordpress.js</string>
 			</array>
 		</dict>
