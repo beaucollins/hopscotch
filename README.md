@@ -1,4 +1,4 @@
-# Teleport
+# Hopscotch
 
 A task launcher for WordPress.
 
